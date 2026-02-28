@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>SongWan - Gabriel Wander</title>
+    <link rel="stylesheet" href="style.css">
+    <meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="theme-color" content="#09090b">
+<link rel="apple-touch-icon" href="background.png">
+</head>
+<body>
+    <div class="app-container">
+        <aside class="sidebar" id="sidebar">
+            <h1 class="brand">SongWan</h1>
+            <p class="author">by Gabriel Wander</p>
+            <nav>
+                <button class="nav-item active" id="nav-search">🔍 Buscar</button>
+                <button class="nav-item" id="nav-library">📚 Sua Biblioteca</button>
+            </nav>
+        </aside>
+
+        <main class="main-content">
+            <header class="search-header">
+                <button id="menu-toggle" class="menu-btn">☰</button>
+                <input type="text" id="query" placeholder="O que o SongWan deve buscar?">
+                <button id="search-action">Scanear</button>
+            </header>
+
+            <section id="results" class="results-grid">
+                </section>
+        </main>
+
+        <footer class="player-bar">
+            <audio id="audio-engine"></audio>
+            <div class="track-info">
+                <img src="" id="current-cover" alt="Capa">
+                <div class="text">
+                    <strong id="current-title">Selecione uma faixa</strong>
+                    <span id="current-artist">Wander Streaming</span>
+                </div>
+                <button id="fav-btn" class="fav-icon">☆</button>
+            </div>
+
+            <div class="player-controls">
+                <button id="play-pause" class="control-btn">▶</button>
+            </div>
+
+            <div class="progress-container">
+                <span id="current-time">0:00</span>
+                <input type="range" id="progress-bar" value="0">
+                <span id="total-time">0:00</span>
+            </div>
+        </footer>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>

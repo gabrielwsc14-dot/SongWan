@@ -1,0 +1,324 @@
+:root {
+    --bg-dark: #09090b;
+    --bg-card: rgba(22, 22, 26, 0.7); /* Mais opaco para leitura no mobile */
+    --wander-blue: #00d4ff;
+    --text-main: #f0f0f0;
+    --text-muted: #a0a0a0;
+}
+
+/* Reset Geral */
+* {
+    box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent;
+}
+
+body, html {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    font-family: 'Segoe UI', Roboto, Helvetica, sans-serif;
+    color: var(--text-main);
+    background-color: var(--bg-dark);
+    overflow: hidden; /* Trava a rolagem global */
+}
+
+/* Fundo Personalizado Gabriel Wander */
+body {
+    background-image: url('background.png');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+}
+
+/* Layout Mobile-First */
+.app-container {
+    display: flex;
+    flex-direction: column; /* Empilha o conteúdo no celular */
+    height: 100vh;
+    width: 100vw;
+}
+
+/* Sidebar - Escondida por padrão no celular */
+.sidebar {
+    display: none; 
+    background: rgba(0, 0, 0, 0.9);
+    backdrop-filter: blur(10px);
+    padding: 20px;
+    border-right: 1px solid #222;
+}
+
+.brand { color: var(--wander-blue); font-size: 1.8rem; margin: 0; }
+.author { color: var(--text-muted); font-size: 0.8rem; margin-bottom: 30px; }
+
+/* Conteúdo Principal Adaptado */
+.main-content {
+    flex: 1;
+    overflow-y: auto; /* Rolagem apenas aqui */
+    overflow-x: hidden;
+    padding-bottom: 120px; /* Evita que o player cubra a última música */
+    -webkit-overflow-scrolling: touch;
+}
+
+/* Cabeçalho de Busca Fixo */
+.search-header {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(9, 9, 11, 0.8);
+    backdrop-filter: blur(15px);
+    padding: 15px;
+    display: flex;
+    gap: 10px;
+}
+
+input {
+    flex: 1;
+    padding: 12px;
+    border-radius: 8px;
+    border: none;
+    background: #1c1c1e;
+    color: white;
+    font-size: 16px; /* Tamanho ideal para não dar zoom no Android */
+}
+
+#search-action {
+    background: var(--wander-blue);
+    border: none;
+    padding: 0 20px;
+    border-radius: 8px;
+    color: black;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+/* Grid de Resultados (2 colunas no celular) */
+/* 1. Ajuste do Grid para 2 colunas no celular */
+.results-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); /* Força 2 colunas */
+    gap: 10px;
+    padding: 10px;
+}
+
+/* 2. Estilo do Botão de Menu */
+.menu-btn {
+    background: none;
+    border: none;
+    color: var(--wander-blue);
+    font-size: 1.5rem;
+    cursor: pointer;
+    padding: 0 5px;
+}
+
+/* 3. Ajuste da Sidebar para ser um menu flutuante no celular */
+.sidebar {
+    position: fixed;
+    left: -250px; /* Começa escondida fora da tela */
+    top: 0;
+    width: 250px;
+    height: 100%;
+    z-index: 1000;
+    transition: 0.3s; /* Animação suave ao abrir */
+    background: rgba(0, 0, 0, 0.95);
+    backdrop-filter: blur(10px);
+}
+
+/* Classe que o JS vai adicionar para abrir o menu */
+.sidebar.active {
+    left: 0;
+}
+
+/* Ajuste nos cards para as músicas não ficarem gigantes */
+.song-card img {
+    width: 100%;
+    aspect-ratio: 1/1; /* Garante que a capa seja sempre quadrada */
+    object-fit: cover;
+    border-radius: 8px;
+}
+
+.song-card h4 {
+    font-size: 0.85rem; /* Fonte um pouco menor para caber em 2 colunas */
+}
+
+
+.song-card {
+    background: var(--bg-card);
+    padding: 12px;
+    border-radius: 12px;
+    text-align: center;
+    backdrop-filter: blur(5px);
+}
+
+/* Barra do Player Estilo Mobile */
+.player-bar {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    height: auto;
+    background: rgba(10, 10, 12, 0.95);
+    backdrop-filter: blur(20px);
+    border-top: 1px solid #333;
+    display: flex;
+    flex-direction: column; /* Elementos empilhados para caber no toque */
+    padding: 10px 15px;
+    gap: 10px;
+}
+
+.track-info {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+#current-cover {
+    width: 45px;
+    height: 45px;
+    border-radius: 4px;
+}
+
+.player-controls {
+    display: flex;
+    justify-content: center;
+}
+
+.control-btn {
+    background: white;
+    border: none;
+    width: 55px;
+    height: 55px;
+    border-radius: 50%;
+    font-size: 1.5rem;
+}
+
+.progress-container {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 11px;
+}
+
+#progress-bar {
+    flex: 1;
+    height: 4px;
+    accent-color: var(--wander-blue);
+}
+
+/* Ajuste para Desktop (Telas Maiores) */
+@media (min-width: 768px) {
+    .app-container { flex-direction: row; }
+    .sidebar { display: block; width: 240px; }
+    .results-grid { grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); }
+    .player-bar { flex-direction: row; height: 90px; }
+}
+/* --- ADICIONAR AO FINAL DO ARQUIVO (SUPORTE A NOVAS FUNÇÕES) --- */
+
+@media (max-width: 768px) {
+    /* 1. Transforma a sidebar em flutuante (Overlay) */
+    .app-container {
+        display: block; /* Desativa o grid fixo que empurra o conteúdo */
+    }
+
+    .sidebar {
+        position: fixed;
+        left: -260px; /* Esconde fora da tela */
+        top: 0;
+        width: 260px;
+        height: 100%;
+        z-index: 9999;
+        transition: 0.3s ease;
+        display: block !important; /* Garante que ela exista para o JS agir */
+    }
+
+    /* Classe que o script.js vai ativar/desativar */
+    .sidebar.active {
+        left: 0; 
+    }
+
+    .main-content {
+        width: 100%;
+        margin: 0;
+        padding-bottom: 150px; /* Espaço para o player não cobrir as músicas */
+    }
+
+    /* 2. Força o Grid de 2 Colunas (conforme o seu print perfeito) */
+    .results-grid {
+        display: grid !important;
+        grid-template-columns: repeat(2, 1fr) !important;
+        gap: 12px !important;
+        padding: 12px !important;
+    }
+
+    /* 3. Ajustes do Player para telas pequenas */
+    .player-bar {
+        height: auto;
+        flex-direction: column;
+        padding: 15px;
+        gap: 10px;
+    }
+
+    .track-info, .progress-container {
+        width: 100%;
+    }
+
+    /* Garante que o ícone de 3 tracinhos (☰) apareça */
+    .menu-btn {
+        display: inline-block !important;
+        background: none;
+        border: none;
+        color: var(--wander-blue);
+        font-size: 1.8rem;
+        cursor: pointer;
+        margin-right: 10px;
+    }
+}
+/* --- AJUSTES PARA AS NOVAS FUNÇÕES (MENU E GRID) --- */
+
+@media (max-width: 768px) {
+    /* 1. Faz o Menu Lateral flutuar (Overlay) e não empurrar as colunas */
+    .app-container {
+        display: block; /* Libera o grid para a sidebar ser fixa */
+    }
+
+    .sidebar {
+        position: fixed;
+        left: -260px; /* Esconde */
+        top: 0;
+        width: 260px;
+        height: 100%;
+        z-index: 1000;
+        transition: 0.3s ease;
+        background: rgba(0, 0, 0, 0.95);
+        display: block !important;
+    }
+
+    /* Classe ativada pelo seu script.js */
+    .sidebar.active {
+        left: 0; 
+    }
+
+    .main-content {
+        width: 100%;
+        margin-left: 0;
+        padding-bottom: 160px; /* Espaço para o player não tampar as músicas */
+    }
+
+    /* 2. Força as 2 Colunas Fixas (Igual ao seu print perfeito) */
+    .results-grid {
+        display: grid !important;
+        grid-template-columns: repeat(2, 1fr) !important;
+        gap: 12px;
+        padding: 12px;
+    }
+
+    /* 3. Ajuste do botão de fechar/abrir */
+    .menu-btn {
+        display: block !important;
+        font-size: 1.8rem;
+        color: var(--wander-blue);
+        background: none;
+        border: none;
+        cursor: pointer;
+    }
+}
